@@ -1,0 +1,130 @@
+{% extends 'templating.html' %} {% load static %} {% block title %} Home{% endblock %} {% block content %}
+<div class="single-channel-image">
+    <img class="img-fluid" alt="" src="{% static 'img/channel-banner.png' %}">
+    <div class="channel-profile">
+        <img class="channel-profile-img" alt="" src="{% static 'img/s2.png' %}">
+        <div class="social hidden-xs">
+            Social &nbsp;
+            <a class="fb" href="#">Facebook</a>
+            <a class="tw" href="#">Twitter</a>
+            <a class="gp" href="#">Google</a>
+        </div>
+    </div>
+</div>
+<div class="single-channel-nav">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="channel-brand" href="#">Osahan Channel <span title="" data-placement="top" data-toggle="tooltip"
+                data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'myvideos' %}">Videos </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'userplaylist' %}">Playlist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'mychannel' %}">Channels</a>
+                </li>
+                <li class="nav-item  active">
+                    <a class="nav-link" href="{% url 'aboutuser' %}">Profile <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'wallet' %}">Wallet</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Search"
+                    aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i
+                        class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
+                <button class="btn btn-outline-danger btn-sm" type="button">Subscribe <strong>1.4M</strong></button>
+            </form>
+        </div>
+    </nav>
+</div>
+
+<div class="video-block section-padding mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="single-video-info-content box mb-3">
+                <div class="single-video-author box mb-3">
+                    <div class="float-right">
+                        <a href="{% url 'editprofile' %}" target="_blank" class="btn btn-danger"><strong>Edit Profile</strong></a>
+                    </div>
+                    <img class="img-fluid" src="{{request.user.photo.url}}" alt="{{request.user.get_full_name}}">
+                    <p><a href="#"><strong>{{request.user.get_full_name}}</strong></a> 
+                        <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span>
+                    </p>
+                    <small>Published on Aug 10, 2020</small>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <h6><b>Gender :</b> {{request.user.gender}} </h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <h6><b>DOB :</b> {{request.user.dob}} </h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <h6><b>Email :</b> {{request.user.email}}</h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <h6><b>Phone :</b> {{request.user.phone}} </h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <h6><b>Address :</b> {{request.user.address}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <h6><b>City :</b> {{request.user.city}}</h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <h6><b>State :</b> {{request.user.state}} </h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <h6><b>Country :</b> {{request.user.country}} </h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <h6><b>Addhar :</b> {{request.user.aadhar}}</h6>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <h6><b>Pan :</b> {{request.user.pannumber}} </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

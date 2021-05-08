@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="TalentForest">
+    <meta name="author" content="TalentForest">
+    <title>Talent Height | {% block title %} {% endblock %} </title>
+
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <link href="{% static 'css/osahan.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'vendor/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/owl-carousel/owl.theme.css' %}"> {% if not request.user.is_authenticated %}
+    <style>
+        #wrapper #content-wrapper .container-fluid {
+            padding: 30px 30px 30px 30px !important;
+        }
+    </style>
+    {% endif %}
+</head>
+
+<body id="page-top">
+    <nav class="navbar navbar-expand navbar-light bg-white static-top osahan-nav sticky-top">&nbsp;&nbsp; {% if request.user.is_authenticated %}<button class="btn btn-link btn-sm text-secondary order-1 order-sm-0" id="sidebarToggle"><i class="fas fa-bars"></i></button> {% endif %} &nbsp;&nbsp;
+        <a class="navbar-brand mr-1" href="{% url 'index' %}">
+            <img class="img-fluid" alt="" src="{% static 'img/logo.png' %}" style="width: 160px;">
+        </a>
+        <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-5 my-2 my-md-0 osahan-navbar-search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <div class="input-group-append">
+                    <button class="btn btn-light" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <ul class="navbar-nav ml-auto ml-md-0 osahan-right-navbar">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item mx-1">
+                <a class="nav-link" href="{% url 'uploadvideo' %}">
+                    <i class="fas fa-plus-circle fa-fw"></i> Upload Video
+                </a>
+            </li>
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bell fa-fw"></i>
+                    <span class="badge badge-danger">9+</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
+                    <a class="dropdown-item" href="#"><i class="fas fa-fw fa-edit "></i> &nbsp; Action</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-fw fa-headphones-alt "></i> &nbsp; Another
+                        action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star "></i> &nbsp; Something else here</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-envelope fa-fw"></i>
+                    <span class="badge badge-success">7</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
+                    <a class="dropdown-item" href="#"><i class="fas fa-fw fa-edit "></i> &nbsp; Action</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-fw fa-headphones-alt "></i> &nbsp; Another
+                        action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star "></i> &nbsp; Something else here</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown no-arrow osahan-right-navbar-user">
+                <a class="nav-link dropdown-toggle user-dropdown-link" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img alt="Avatar" src="{% static 'img/user.png' %}"> {{request.user.get_full_name}}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="{% url 'mychannel' %}"><i class="fas fa-fw fa-user-circle"></i> &nbsp; My Account</a>
+                    <a class="dropdown-item" href=""><i class="fas fa-fw fa-video"></i> &nbsp; Subscriptions</a>
+                    <a class="dropdown-item" href="settings.html"><i class="fas fa-fw fa-cog"></i> &nbsp; Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-fw fa-sign-out-alt"></i> &nbsp; Logout</a>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item mx-1">
+                <a class="nav-link" href="{% url 'signin' %}">
+                    <i class="fas fa-sign-in-alt fa-fw"></i> Login
+                </a>
+            </li>
+            <li class="nav-item mx-1">
+                <a class="nav-link" href="{% url 'signup' %}">
+                    <i class="fas fa-user-plus fa-fw"></i> Sign Up
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <div id="wrapper">
+        {% if request.user.is_authenticated %}
+        <ul class="sidebar navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'index' %}"><i class="fas fa-fw fa-home"></i> <span>Dashboard</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}"><i class="fas fa-fw fa-home"></i> <span>Content</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'playlist' %}"><i class="fas fa-fw fa-home"></i> <span>Playlist</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'channels' %}"><i class="fas fa-fw fa-globe"></i><span>Channels</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'channels' %}"><i class="fas fa-fw fa-globe"></i><span>Analytics</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fas fa-fw fa-industry"></i><span>Comments</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fas fa-fw fa-industry"></i><span>Monetization</span></a>
+            </li>
+            
+        </ul>
+        {% endif %}
+
+        <div id="content-wrapper">
+            <div class="container-fluid pb-0">
+                <div class="top-mobile-search">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form class="mobile-search">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search for..." class="form-control">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-dark"><i
+                                                class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% block content %}
+                <div class="top-category section-padding mb-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="main-title">
+                                <div class="btn-group float-right right-action">
+                                    <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top
+                                            Rated</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp;
+                                            Viewed</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i>
+                                            &nbsp; Close</a>
+                                    </div>
+                                </div>
+                                <h6>Channels Categories</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="owl-carousel owl-carousel-category">
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s1.png' %}" alt="">
+                                            <h6>Your Life</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s2.png' %}" alt="">
+                                            <h6>Unboxing Cool</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s3.png' %}" alt="">
+                                            <h6>Service Reviewing</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s4.png' %}" alt="">
+                                            <h6>Gaming <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i
+                                                        class="fas fa-check-circle text-success"></i></span></h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s5.png' %}" alt="">
+                                            <h6>Technology Tutorials</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s6.png' %}" alt="">
+                                            <h6>Singing</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s7.png' %}" alt="">
+                                            <h6>Cooking</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s8.png' %}" alt="">
+                                            <h6>Traveling</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s1.png' %}" alt="">
+                                            <h6>Education</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s2.png' %}" alt="">
+                                            <h6>Noodles, Sauces & Instant Food</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s3.png' %}" alt="">
+                                            <h6>Comedy <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i
+                                                        class="fas fa-check-circle text-success"></i></span></h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="category-item">
+                                        <a href="#">
+                                            <img class="img-fluid" src="{% static 'img/s4.png' %}" alt="">
+                                            <h6>Lifestyle Advice</h6>
+                                            <p>74,853 views</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="video-block section-padding">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="main-title">
+                                <div class="btn-group float-right right-action">
+                                    <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Sort by <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top
+                                            Rated</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp;
+                                            Viewed</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i>
+                                            &nbsp; Close</a>
+                                    </div>
+                                </div>
+                                <h6>Featured Videos</h6>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="video-card">
+                                <div class="video-card-image">
+                                    <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/v1.png' %}" alt=""></a>
+                                    <div class="time">3:50</div>
+                                </div>
+                                <div class="video-card-body">
+                                    <div class="video-title">
+                                        <a href="#">There are many variations of passages of Lorem</a>
+                                    </div>
+                                    <div class="video-page text-success">
+                                        Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i
+                                                class="fas fa-check-circle text-success"></i></a>
+                                    </div>
+                                    <div class="video-view">
+                                        1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="video-card">
+                                <div class="video-card-image">
+                                    <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/v2.png' %}" alt=""></a>
+                                    <div class="time">3:50</div>
+                                </div>
+                                <div class="video-card-body">
+                                    <div class="video-title">
+                                        <a href="#">There are many variations of passages of Lorem</a>
+                                    </div>
+                                    <div class="video-page text-success">
+                                        Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i
+                                                class="fas fa-check-circle text-success"></i></a>
+                                    </div>
+                                    <div class="video-view">
+                                        1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="video-card">
+                                <div class="video-card-image">
+                                    <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/v3.png' %}" alt=""></a>
+                                    <div class="time">3:50</div>
+                                </div>
+                                <div class="video-card-body">
+                                    <div class="video-title">
+                                        <a href="#">There are many variations of passages of Lorem</a>
+                                    </div>
+                                    <div class="video-page text-danger">
+                                        Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Unverified"><i
+                                                class="fas fa-frown text-danger"></i></a>
+                                    </div>
+                                    <div class="video-view">
+                                        1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="video-card">
+                                <div class="video-card-image">
+                                    <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/v4.png' %}" alt=""></a>
+                                    <div class="time">3:50</div>
+                                </div>
+                                <div class="video-card-body">
+                                    <div class="video-title">
+                                        <a href="#">There are many variations of passages of Lorem</a>
+                                    </div>
+                                    <div class="video-page text-success">
+                                        Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i
+                                                class="fas fa-check-circle text-success"></i></a>
+                                    </div>
+                                    <div class="video-view">
+                                        1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="video-card">
+                                <div class="video-card-image">
+                                    <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/v5.png' %}" alt=""></a>
+                                    <div class="time">3:50</div>
+                                </div>
+                                <div class="video-card-body">
+                                    <div class="video-title">
+                                        <a href="#">There are many variations of passages of Lorem</a>
+                                    </div>
+                                    <div class="video-page text-success">
+                                        Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i
+                                                class="fas fa-check-circle text-success"></i></a>
+                                    </div>
+                                    <div class="video-view">
+                                        1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="video-card">
+                                <div class="video-card-image">
+                                    <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/v6.png' %}" alt=""></a>
+                                    <div class="time">3:50</div>
+                                </div>
+                                <div class="video-card-body">
+                                    <div class="video-title">
+                                        <a href="#">There are many variations of passages of Lorem</a>
+                                    </div>
+                                    <div class="video-page text-danger">
+                                        Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Unverified"><i
+                                                class="fas fa-frown text-danger"></i></a>
+                                    </div>
+                                    <div class="video-view">
+                                        1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="video-card">
+                                <div class="video-card-image">
+                                    <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/v7.png' %}" alt=""></a>
+                                    <div class="time">3:50</div>
+                                </div>
+                                <div class="video-card-body">
+                                    <div class="video-title">
+                                        <a href="#">There are many variations of passages of Lorem</a>
+                                    </div>
+                                    <div class="video-page text-success">
+                                        Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i
+                                                class="fas fa-check-circle text-success"></i></a>
+                                    </div>
+                                    <div class="video-view">
+                                        1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="video-card">
+                                <div class="video-card-image">
+                                    <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/v8.png' %}" alt=""></a>
+                                    <div class="time">3:50</div>
+                                </div>
+                                <div class="video-card-body">
+                                    <div class="video-title">
+                                        <a href="#">There are many variations of passages of Lorem</a>
+                                    </div>
+                                    <div class="video-page text-success">
+                                        Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i
+                                                class="fas fa-check-circle text-success"></i></a>
+                                    </div>
+                                    <div class="video-view">
+                                        1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="mt-0">
+                <div class="video-block section-padding">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="main-title">
+                                <div class="btn-group float-right right-action">
+                                    <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Sort by <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top
+                                            Rated</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp;
+                                            Viewed</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i>
+                                            &nbsp; Close</a>
+                                    </div>
+                                </div>
+                                <h6>Popular Channels</h6>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="channels-card">
+                                <div class="channels-card-image">
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/s1.png' %}" alt=""></a>
+                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-outline-danger btn-sm">Subscribe
+                                            <strong>1.4M</strong></button></div>
+                                </div>
+                                <div class="channels-card-body">
+                                    <div class="channels-title">
+                                        <a href="#">Channels Name</a>
+                                    </div>
+                                    <div class="channels-view">
+                                        382,323 subscribers
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="channels-card">
+                                <div class="channels-card-image">
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/s2.png' %}" alt=""></a>
+                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-outline-danger btn-sm">Subscribe
+                                            <strong>1.4M</strong></button></div>
+                                </div>
+                                <div class="channels-card-body">
+                                    <div class="channels-title">
+                                        <a href="#">Channels Name</a>
+                                    </div>
+                                    <div class="channels-view">
+                                        382,323 subscribers
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="channels-card">
+                                <div class="channels-card-image">
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/s3.png' %}" alt=""></a>
+                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-outline-secondary btn-sm">Subscribed
+                                            <strong>1.4M</strong></button></div>
+                                </div>
+                                <div class="channels-card-body">
+                                    <div class="channels-title">
+                                        <a href="#">Channels Name <span title="" data-placement="top"
+                                                data-toggle="tooltip" data-original-title="Verified"><i
+                                                    class="fas fa-check-circle"></i></span></a>
+                                    </div>
+                                    <div class="channels-view">
+                                        382,323 subscribers
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 mb-3">
+                            <div class="channels-card">
+                                <div class="channels-card-image">
+                                    <a href="#"><img class="img-fluid" src="{% static 'img/s4.png' %}" alt=""></a>
+                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-outline-danger btn-sm">Subscribe
+                                            <strong>1.4M</strong></button></div>
+                                </div>
+                                <div class="channels-card-body">
+                                    <div class="channels-title">
+                                        <a href="#">Channels Name</a>
+                                    </div>
+                                    <div class="channels-view">
+                                        382,323 subscribers
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+
+
+            <footer class="sticky-footer">
+                <div class="container">
+                    <div class="row no-gutters">
+                        <div class="col-lg-6 col-sm-6">
+                            <p class="mt-1 mb-0">&copy; Copyright 2021 <strong class="text-dark">Talent Height</strong>. All Rights Reserved<br>
+                                <small class="mt-0 mb-0">Made with <i class="fas fa-heart text-danger"></i> by <a
+                                        class="text-primary" target="_blank" href="https://specso.in/">Specso Technologies</a>
+                                </small>
+                            </p>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 text-right">
+                            <div class="app">
+                                <a href="#"><img alt="" src="{% static 'img/google.png' %}"></a>
+                                <a href="#"><img alt="" src="{% static 'img/apple.png' %}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+    </div>
+
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}" type="eb3db964779b7501abb0779a-text/javascript"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}" type="eb3db964779b7501abb0779a-text/javascript"></script>
+
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}" type="eb3db964779b7501abb0779a-text/javascript"></script>
+
+    <script src="{% static 'vendor/owl-carousel/owl.carousel.js' %}" type="eb3db964779b7501abb0779a-text/javascript">
+    </script>
+    <script src="{% static 'sweetalert2.all.min.js' %}" defer=""></script>
+    <script src="{% static 'js/custom.js' %}" type="eb3db964779b7501abb0779a-text/javascript"></script>
+    <script src="{% static 'js/rocket-loader.min.js' %}" data-cf-settings="eb3db964779b7501abb0779a-|49" defer=""></script>
+</body>
+
+</html>

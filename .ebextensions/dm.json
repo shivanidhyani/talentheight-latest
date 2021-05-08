@@ -1,0 +1,42 @@
+{
+    "success": 1,
+    "pager": {
+        "page": 1,
+        "per_page": 50,
+        "total": 4
+    },
+    "results": [{
+        "id": "99857585",
+        "sport_id": "3",
+        "time": "1617976800",
+        "time_status": "0",
+        "league": {
+            "id": "10050449",
+            "name": "Indian Premier League"
+        },
+        "home": {
+            "id": "10500794",
+            "name": "Mumbai Indians"
+        },
+        "away": {
+            "id": "10502071",
+            "name": "RC Bangalore"
+        },
+        "ss": NULL,
+        "our_event_id": "3315080",
+        "r_id": NULL,
+        "updated_at": "1617192349"
+    }, {
+        "id": "99857588",
+        "sport_id": "3",
+        "time": "1618063200",
+        "time_status": "0",
+        "league": {},
+        "home": {},
+        "away": {},
+        "ss": NULL,
+        "our_event_id": "3315081",
+        "r_id": NULL,
+        "updated_at": "1617192349"
+    }]
+}

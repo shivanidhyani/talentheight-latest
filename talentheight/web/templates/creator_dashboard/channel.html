@@ -1,0 +1,49 @@
+{% extends 'creator_dashboard/templating.html' %} {% load static %} {% block title %} Home{% endblock %} {% block content %}
+<div class="mt-4 mb-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-title">
+                <h6>Create Channel </h6>
+            </div>
+        </div>
+    </div>
+    <form>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">Channel Name <span class="required">*</span></label>
+                    <input class="form-control border-form-control" value="" placeholder="Gurdeep" type="text">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">Channel Category <span class="required">*</span></label>
+                    <select class="custom-select">
+                    {% if Category %}
+                        {% for ChannelCategory in Category %}
+                        <option value="{{ ChannelCategory.id }}">{{ ChannelCategory.name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Channel Description <span class="required">*</span></label>
+                    <textarea class="form-control border-form-control"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-right">
+                <button type="" class="btn btn-danger border-none"> Cencel </button>
+                <button type="submit" class="btn btn-success border-none"> Save Changes </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<hr class="mt-0"> {% endblock %}

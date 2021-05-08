@@ -1,0 +1,41 @@
+{% extends 'creator dashboard/templating.html' %} {% load static %} {% block title %} Home{% endblock %} {% block content %}
+<div class="mt-4 mb-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-title">
+                <h6>Create Playlist </h6>
+            </div>
+        </div>
+    </div>
+    <form>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">Playlist Name <span class="required">*</span></label>
+                    <input class="form-control border-form-control" value="" placeholder="Playlist Name" type="text">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">Add Video</label>
+                    <select class="custom-select">
+                    {% if posts %}
+                        {% for Post in posts %}
+                        <option value="{{ Post.name }}">{{ Post.name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-right">
+                <button type="button" class="btn btn-danger border-none"> Cencel </button>
+                <button type="button" class="btn btn-success border-none"> Save Changes </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<hr class="mt-0"> {% endblock %}
